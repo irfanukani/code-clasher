@@ -1,0 +1,8 @@
+.logo {
+  background-image: linear-gradient(aqua, aqua);
+  background-position: 0 100%;
+  background-size: 100% 7px;
+  background-repeat: no-repeat;
+
+  animation: change 1s infinite linear alternate;
+}
