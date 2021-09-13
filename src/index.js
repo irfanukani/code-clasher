@@ -8,12 +8,16 @@ import {
   ChakraProvider,
 } from '@chakra-ui/react';
 import { theme } from "./theme"
+import { Provider } from 'react-redux';
+import store from './store';
 
 ReactDOM.render(
   <StrictMode>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ChakraProvider theme={theme}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ChakraProvider>
   </StrictMode>,
   document.getElementById('root')
