@@ -3,6 +3,14 @@
   background-position: 0 100%;
   background-size: 100% 7px;
   background-repeat: no-repeat;
-
   animation: change 1s infinite linear alternate;
+}
+
+.active {
+  border-bottom: 1px solid rgb(49, 150, 245);
+}
+
+a:hover {
+  transition: all 0.2s;
+  color: rgb(124, 192, 255);
 }
