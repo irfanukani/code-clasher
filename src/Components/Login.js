@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { createError } from '../Actions/Errors/handleErrors';
 import { isValid } from '../Utilities/validator';
 import { useHistory } from 'react-router';
+import { login } from '../Actions/Auth/login';
 
 
 const Login = () => {
@@ -20,7 +21,11 @@ const Login = () => {
     }
 
     const handleSubmit = () => {
-        dispatch(isValid(user));
+        if (isValid(user)) {
+            dispatch(login(user));
+        } else {
+            dispatch(createError('Please Enter a Valid Email or Password'));
+        }
     }
 
     const handleNavigation = () => {

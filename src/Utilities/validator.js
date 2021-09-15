@@ -1,14 +1,9 @@
-import { createError } from "../Actions/Errors/handleErrors";
-
-export const isValid = (user = {}) => dispatch => {
+export const isValid = (user = {}) => {
     if (user.email === undefined || user.email === null) {
-        dispatch(createError('Please Enter a Valid Email'));
-        return;
+        return false;
     }
     if (user.password === undefined || user.password === null) {
-        dispatch(createError('Please Enter a Valid Password'));
-        return;
+        return false;
     }
-
-    //Login Dispatch
+    return true;
 }

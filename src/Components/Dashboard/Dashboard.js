@@ -1,7 +1,6 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { Badge, Box } from '@chakra-ui/layout'
-import { Spinner } from '@chakra-ui/spinner'
-import { Table, TableCaption, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/table'
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { DashboardSkeleton } from '../../Utilities/Skeletons'
