@@ -56,7 +56,7 @@ export const App = () => {
   return (
     <BrowserRouter >
       {dErrors && <Alert status="error"> <AlertIcon /> {dErrors.message} <CloseButton position="absolute" right="8px" top="8px" onClick={() => _handleClose()} /></Alert>}
-      {true ? getAuthRoutes() : getUserRoutes()}
+      {false ? getAuthRoutes() : getUserRoutes()}
     </BrowserRouter>
   )
 }

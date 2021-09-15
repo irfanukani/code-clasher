@@ -2,10 +2,12 @@ import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { Badge, Box } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, TableCaption, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/table'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { DashboardSkeleton } from '../../Utilities/Skeletons'
 
 const Dashboard = () => {
+
     const dummy = [{
         id: 1,
         questionName: 'Chef and the array',
@@ -83,7 +85,9 @@ const Dashboard = () => {
     }
 
     return (
+
         <Box w="70%" mx="auto" mt="20" pb="40">
+            {problemList.length == 0 && <DashboardSkeleton />}
             <Table colorScheme="linkedin">
                 <Thead>
                     <Tr>
