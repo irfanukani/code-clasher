@@ -8,6 +8,7 @@ import AuthNavbar from './Components/AuthNavbar'
 import Dashboard from './Components/Dashboard/Dashboard'
 import Login from './Components/Login'
 import Navbar from './Components/Navbar'
+import Profile from './Components/Profile'
 import SignUp from './Components/SignUp'
 import "./index.css"
 
@@ -48,6 +49,9 @@ export const App = () => {
       <Switch>
         <Route path="/" exact>
           <Dashboard />
+        </Route>
+        <Route path="/profile" exact>
+          <Profile />
         </Route>
       </Switch>
     </Fragment>
