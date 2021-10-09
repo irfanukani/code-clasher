@@ -6,7 +6,7 @@ import { useAPI } from '../Hooks/UseAPI';
 import _ from 'lodash';
 import axios from 'axios';
 import { BASE_URL } from '../Hooks/Constants';
-import { createError } from '../Actions/Errors/handleErrors';
+import { updateProfile } from "../Actions/Profile/updateProfile"
 import { CheckIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/spinner';
 import { Avatar } from '@chakra-ui/avatar';
@@ -25,11 +25,16 @@ const Profile = () => {
             setloading(false)
         })
     };
+    const dispatch = useDispatch();
     const [debouncedCallApi] = useState(() => _.debounce(callApi, 400));
     const [userImage, setUserImage] = useState(null);
     function handleChange(e) {
         setUserName(e.target.value)
         debouncedCallApi(e.target.value);
+    }
+
+    function handleSubmit() {
+        dispatch(updateProfile({ profileImage: userImage, username: userName }));
     }
 
     return (
@@ -46,7 +51,7 @@ const Profile = () => {
             </Flex>
 
             <Flex alignItems="center" justifyContent="center" mt="40">
-                <Button>🚀 Let's Get Started</Button>
+                <Button onClick={handleSubmit}>🚀 Let's Get Started</Button>
             </Flex>
         </Box>
     )

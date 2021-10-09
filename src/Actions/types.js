@@ -1,3 +1,5 @@
 export const CREATE_ERROR = 'CREATE_ERROR';
 export const DELETE_ERROR = 'DELETE_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const PROFILE_FETCH_SUCCESS = 'PROFILE_FETCH_SUCCESS'
+export const LOGOUT = 'LOGOUT'

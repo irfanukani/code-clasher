@@ -17,7 +17,7 @@ const SignUp = () => {
     }
 
     const handleSubmit = () => {
-        dispatch(isValid(user));
+        // dispatch(isValid(user));
     }
 
 

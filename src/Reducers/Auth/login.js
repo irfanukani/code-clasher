@@ -1,5 +1,5 @@
 import moment from "moment";
-import { LOGIN_SUCCESS } from "../../Actions/types";
+import { LOGIN_SUCCESS, LOGOUT } from "../../Actions/types";
 
 function getUserData() {
     var userInfo = null;
@@ -12,7 +12,6 @@ function getUserData() {
             userInfo = checkInfo;
         }
     }
-
     return userInfo
 }
 
@@ -21,11 +20,17 @@ export const login = (userData = getUserData(), action) => {
     const { type, payload } = action;
     switch (type) {
         case LOGIN_SUCCESS:
+            sessionStorage.setItem('token', payload.token);
+            sessionStorage.setItem('id', payload._id)
             document.cookie = `user=${JSON.stringify({
                 ...payload,
                 expireAt: moment().add(12, "hours"),
             })}; secure;`;
             return payload;
+        case LOGOUT:
+            document.cookie = `user = {}`;
+            sessionStorage.removeItem('token');
+            return null
         default:
             return userData
     }

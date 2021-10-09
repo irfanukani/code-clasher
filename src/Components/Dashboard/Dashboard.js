@@ -2,11 +2,12 @@ import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { Badge, Box } from '@chakra-ui/layout'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { DashboardSkeleton } from '../../Utilities/Skeletons'
 
 const Dashboard = () => {
-
+    const storedState = useSelector(state => state);
     const dummy = [{
         id: 1,
         questionName: 'Chef and the array',
@@ -82,6 +83,13 @@ const Dashboard = () => {
     const handleRoute = (id) => {
         return history.push(`/problem/${id}`);
     }
+
+    useEffect(() => {
+        if (storedState?.gameInfo !== null || sessionStorage.getItem('gameInfo')) {
+            let gameId = storedState?.gameInfo?.gameId || JSON.parse(sessionStorage.getItem('gameInfo'))?.gameId;
+            history.push('/game/' + gameId);
+        }
+    }, []);
 
     return (
 

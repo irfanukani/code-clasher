@@ -2,10 +2,12 @@ import { Alert, AlertIcon } from '@chakra-ui/alert'
 import { CloseButton } from '@chakra-ui/close-button'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom'
 import { createError, deleteErrors } from './Actions/Errors/handleErrors'
+import { getUserProfile } from './Actions/Profile/getUserProfile'
 import AuthNavbar from './Components/AuthNavbar'
 import Dashboard from './Components/Dashboard/Dashboard'
+import Game from './Components/Game'
 import Login from './Components/Login'
 import Navbar from './Components/Navbar'
 import Profile from './Components/Profile'
@@ -15,12 +17,13 @@ import "./index.css"
 export const App = () => {
   const storedState = useSelector((state) => state);
   const [dErrors, setdErrors] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setdErrors(storedState.getErrors);
+    dispatch(getUserProfile());
   }, [storedState.getErrors])
 
-  const dispatch = useDispatch();
 
   const _handleClose = () => {
     dispatch(deleteErrors());
@@ -45,13 +48,19 @@ export const App = () => {
 
   const getUserRoutes = () => {
     return <Fragment>
-      <AuthNavbar />
       <Switch>
         <Route path="/" exact>
-          <Dashboard />
+          <>
+            <AuthNavbar />
+            <Dashboard />
+          </>
+
         </Route>
         <Route path="/profile" exact>
           <Profile />
+        </Route>
+        <Route path="/game/:id" >
+          <Game />
         </Route>
       </Switch>
     </Fragment>

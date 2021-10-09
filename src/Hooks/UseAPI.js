@@ -4,11 +4,15 @@ import { BASE_URL } from './Constants'
 
 export async function useAPI(endpoint, method, data, params) {
     let resdata, error, loading = true;
+    const token = sessionStorage.getItem('token');
     await axios.request({
         method: method,
         url: BASE_URL + endpoint,
         data: data,
-        params: params
+        params: params,
+        headers: {
+            'x-access-token': `${token}`
+        }
     }).then((res) => {
         resdata = res;
         loading = false;

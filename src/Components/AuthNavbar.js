@@ -1,20 +1,45 @@
 import { Box, Flex } from '@chakra-ui/layout'
-import React from 'react'
+import React, { useState } from 'react'
 import logo from "../Assets/logo.svg";
 import { useHistory, Link, NavLink } from 'react-router-dom';
 import { Button } from '@chakra-ui/button';
 import { useColorMode, useColorModeValue } from '@chakra-ui/color-mode';
-import { ArrowRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { AtSignIcon, ChevronLeftIcon, ExternalLinkIcon, LinkIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Avatar } from '@chakra-ui/avatar';
+import { useDispatch, useSelector } from 'react-redux';
+import { LOGIN_SUCCESS, LOGOUT } from '../Actions/types';
+import { Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger } from '@chakra-ui/popover';
+import { Stack } from '@chakra-ui/layout';
+import { StackItem } from '@chakra-ui/layout';
+import { createNewGame } from '../Actions/Game/createNewGame';
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/modal';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control';
+import { Input } from '@chakra-ui/input';
 
 function AuthNavbar() {
     const history = useHistory();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const handleRouteChange = () => {
         history.push('/')
     }
-
+    const dispatch = useDispatch();
+    const logout = () => {
+        dispatch({ type: LOGOUT, payload: {} });
+    }
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
     const clr = useColorModeValue('#000', '#FFF');
     const icon = useColorModeValue(<MoonIcon />, <SunIcon />);
     const { toggleColorMode } = useColorMode();
+
+    const storedState = useSelector(state => state);
+    console.log(storedState);
+
+    function handleCreateGame() {
+        dispatch(createNewGame(storedState?.userProfile?.profile?.email || "NA", startTime, endTime));
+        history.push('/game/' + JSON.parse(sessionStorage.getItem('gameInfo')).gameId);
+    }
 
     return (
         <Flex align="center" justifyContent="space-between" p="8">
@@ -34,12 +59,54 @@ function AuthNavbar() {
                 </Flex>
             </Flex>
             <Flex justifyContent="center" alignItems="center">
+
+                <Popover>
+                    <PopoverTrigger>
+                        <Avatar name={storedState?.userProfile?.profile?.email} src="" size="sm" cursor="pointer" />
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverHeader>{storedState?.userProfile?.profile?.email}</PopoverHeader>
+                        <PopoverBody>
+                            <Stack>
+                                <StackItem p="2" className="custom-x"> <AtSignIcon /> Profile</StackItem>
+                                <StackItem p="2" className="custom-x"><ExternalLinkIcon />Friends</StackItem>
+                                <StackItem p="2" className="custom-x" onClick={logout}><ChevronLeftIcon />Logout</StackItem>
+                            </Stack>
+                        </PopoverBody>
+                    </PopoverContent>
+                </Popover>
                 <Button mx="8" onClick={toggleColorMode}>
                     {icon}
                 </Button>
-                <Button variant="outline" colorScheme="gray"> Create a game</Button>
+                <Button variant="outline" colorScheme="gray" onClick={onOpen}> Create a game</Button>
             </Flex>
-        </Flex>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>New Room</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <FormControl>
+                            <FormLabel>Starting Time</FormLabel>
+                            <Input type="time" onChange={(e) => setStartTime(e.target.value)} />
+                            <FormHelperText>Game will automatically start at this time.</FormHelperText>
+                            <FormLabel mt="8">Ending Time</FormLabel>
+                            <Input type="time" onChange={(e) => setEndTime(e.target.value)} />
+                            <FormHelperText>Results will be announced at this time.</FormHelperText>
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button variant="ghost" mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button colorScheme="blue" onClick={handleCreateGame}>Create Room</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </Flex >
     )
 }
 

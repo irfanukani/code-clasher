@@ -10,6 +10,7 @@ import {
 import { theme } from "./theme"
 import { Provider } from 'react-redux';
 import store from './store';
+import './firebase';
 
 ReactDOM.render(
   <StrictMode>

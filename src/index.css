@@ -14,3 +14,44 @@ a:hover {
   transition: all 0.2s;
   color: rgb(124, 192, 255);
 }
+
+.custom-x {
+  cursor: pointer;
+}
+.custom-x svg {
+  margin-right: 15px;
+}
+
+.custom-x:hover {
+  background-color: rgba(219, 219, 219, 0.349);
+  border-radius: 5px;
+  transition: all 0.5s ease;
+}
+
+.keyword {
+  color: rgb(40, 40, 241);
+}
+
+.function {
+  color: blueviolet;
+}
+
+.operator {
+  color: rgb(42, 245, 42);
+}
+
+.punctuation {
+  color: rgb(110, 110, 241);
+}
+
+.comment {
+  color: rgb(9, 197, 9);
+}
+
+.npm__react-simple-code-editor__textarea {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
