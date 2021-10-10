@@ -62,7 +62,7 @@ function AuthNavbar() {
 
                 <Popover>
                     <PopoverTrigger>
-                        <Avatar name={storedState?.userProfile?.profile?.email} src="" size="sm" cursor="pointer" />
+                        <Avatar src={storedState?.userProfile?.profile?.profilePic} size="sm" cursor="pointer" />
                     </PopoverTrigger>
                     <PopoverContent>
                         <PopoverArrow />
@@ -70,7 +70,9 @@ function AuthNavbar() {
                         <PopoverHeader>{storedState?.userProfile?.profile?.email}</PopoverHeader>
                         <PopoverBody>
                             <Stack>
-                                <StackItem p="2" className="custom-x"> <AtSignIcon /> Profile</StackItem>
+
+                                <Link to="/profile" className="custom-x"><StackItem p="2" >  <AtSignIcon /> Profile </StackItem></Link>
+
                                 <StackItem p="2" className="custom-x"><ExternalLinkIcon />Friends</StackItem>
                                 <StackItem p="2" className="custom-x" onClick={logout}><ChevronLeftIcon />Logout</StackItem>
                             </Stack>

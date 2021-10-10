@@ -41,7 +41,7 @@ const Login = () => {
 
     return (
         <Grid templateColumns="1fr 1fr">
-            <Stack alignItems="start" justifyContent="start" padding="8">
+            <Stack alignItems="start" justifyContent="start" padding="8" mx="20">
                 <Text fontSize="xl" mt="90px">Continue to <span className="logo">Code Clasher </span></Text>
                 <Stack spacing={3} pt="40px">
                     <Input placeholder="Email" onChange={(e) => handleChange(e)} size="md" w="390px" type="email" name="email" required />

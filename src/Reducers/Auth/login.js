@@ -1,5 +1,5 @@
 import moment from "moment";
-import { LOGIN_SUCCESS, LOGOUT } from "../../Actions/types";
+import { LOGIN_SUCCESS, LOGOUT, SIGNUP_SUCCESS } from "../../Actions/types";
 
 function getUserData() {
     var userInfo = null;
@@ -19,6 +19,7 @@ function getUserData() {
 export const login = (userData = getUserData(), action) => {
     const { type, payload } = action;
     switch (type) {
+        case SIGNUP_SUCCESS:
         case LOGIN_SUCCESS:
             sessionStorage.setItem('token', payload.token);
             sessionStorage.setItem('id', payload._id)

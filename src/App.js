@@ -2,7 +2,7 @@ import { Alert, AlertIcon } from '@chakra-ui/alert'
 import { CloseButton } from '@chakra-ui/close-button'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch, useHistory } from 'react-router-dom'
 import { createError, deleteErrors } from './Actions/Errors/handleErrors'
 import { getUserProfile } from './Actions/Profile/getUserProfile'
 import AuthNavbar from './Components/AuthNavbar'
@@ -61,6 +61,9 @@ export const App = () => {
         </Route>
         <Route path="/game/:id" >
           <Game />
+        </Route>
+        <Route path="*">
+          <Redirect to="/"></Redirect>
         </Route>
       </Switch>
     </Fragment>
