@@ -55,3 +55,24 @@ a:hover {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.select-custom {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.select-custom:hover {
+  background-color: rgba(93, 30, 241, 0.363);
+  transition: all 0.3s ease;
+}
+
+.selected {
+  background-color: rgba(93, 30, 241, 0.363);
+}
+
+.link {
+  padding: 18px;
+  background-color: rgba(63, 63, 238, 0.055);
+  border-radius: 5px;
+}

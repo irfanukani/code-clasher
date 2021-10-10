@@ -1,18 +1,14 @@
 import { Button } from '@chakra-ui/button'
-import { ChevronRightIcon, TriangleDownIcon } from '@chakra-ui/icons'
 import { Box, Divider, Flex, Grid, Spacer, Text } from '@chakra-ui/layout'
 import React from 'react'
-import { Fragment } from 'react'
 import { CustomEditor } from "./Editor"
-import GameNavBar from './GameNavBar'
 
 function Game() {
-
+    const path = window?.location?.href
     const exampleInput = `4\n5 4 9 7 \n4 5 8`
-
     return (
         <div>
-            <GameNavBar />
+
             <Divider orientation="horizontal" mb="4" />
             <Grid templateColumns="repeat(2, 1fr)" gap={6} fontFamily="monospace">
                 <Box w="100%" h="80vh" >
@@ -20,7 +16,7 @@ function Game() {
                         <Text fontSize="2xl" px="8">Alice And BoB</Text>
                         <Spacer />
                         <Button colorScheme="whatsapp" px="8" mx="4"> Run</Button>
-                        <Button px="8">Submit</Button>
+                        {path?.split('/')?.includes('game') && <Button px="8">Submit</Button>}
                     </Flex>
                     <Box px="8" mt="14">
                         <Text fontSize="md"> Lorem ipsum dolor sit amet consectetur adipisicing elit.

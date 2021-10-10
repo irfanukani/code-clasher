@@ -2,45 +2,15 @@ import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { Badge, Box } from '@chakra-ui/layout'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { getAllQuestions } from '../../Actions/Question/getAllQuestions'
 import { DashboardSkeleton } from '../../Utilities/Skeletons'
 
 const Dashboard = () => {
     const storedState = useSelector(state => state);
-    const dummy = [{
-        id: 1,
-        questionName: 'Chef and the array',
-        solvedBy: 167,
-        difficulty: 'easy',
 
-    },
-    {
-        id: 2,
-        questionName: 'Alice and Bob',
-        solvedBy: 67,
-        difficulty: 'medium',
-
-    }, {
-        id: 3,
-        questionName: 'Alice and Bob',
-        solvedBy: 1967,
-        difficulty: 'hard',
-
-    }, {
-        id: 4,
-        questionName: 'Alice and Bob',
-        solvedBy: 1467,
-        difficulty: 'medium',
-
-    }, {
-        id: 5,
-        questionName: 'Alice and Bob',
-        solvedBy: 1667,
-        difficulty: 'easy',
-
-    }]
-    const [problemList, setProblemList] = useState(dummy);
+    const [problemList, setProblemList] = useState(storedState.questions);
     const [sortedByDifficulty, setSortedByDifficulty] = useState(false);
     const [sortedByPeople, setSortedByPeople] = useState(false);
     async function sortByDifficulty() {
@@ -52,14 +22,14 @@ const Dashboard = () => {
         }
         setSortedByDifficulty(!sortedByDifficulty);
         let ModifiedList = [];
-        let easyQuestions = dummy.filter((prblm) => {
-            return prblm.difficulty === 'easy'
+        let easyQuestions = problemList.filter((prblm) => {
+            return prblm.tag === 'easy'
         });
-        let mediumQuestions = dummy.filter((prblm) => {
-            return prblm.difficulty === 'medium'
+        let mediumQuestions = problemList.filter((prblm) => {
+            return prblm.tag === 'medium'
         });
-        let hardQuestions = dummy.filter((prblm) => {
-            return prblm.difficulty === 'hard'
+        let hardQuestions = problemList.filter((prblm) => {
+            return prblm.tag === 'hard'
         });
         await easyQuestions.map((prb) => {
             ModifiedList.push(prb);
@@ -83,19 +53,22 @@ const Dashboard = () => {
     const handleRoute = (id) => {
         return history.push(`/problem/${id}`);
     }
-
+    const dispatch = useDispatch();
     useEffect(() => {
+        if (problemList?.length === 0) {
+            dispatch(getAllQuestions());
+            setProblemList(storedState.questions);
+        }
         if (storedState?.gameInfo !== null || sessionStorage.getItem('gameInfo')) {
             let gameId = storedState?.gameInfo?.gameId || JSON.parse(sessionStorage.getItem('gameInfo'))?.gameId;
-            history.push('/game/' + gameId);
+            // history.push('/game/' + gameId);
         }
     }, []);
 
     return (
 
         <Box w="70%" mx="auto" mt="20" pb="40">
-            {problemList.length == 0 && <DashboardSkeleton />}
-            <Table colorScheme="linkedin">
+            {storedState?.questions?.length == 0 ? <DashboardSkeleton /> : <Table colorScheme="linkedin">
                 <Thead>
                     <Tr>
                         <Th>Id</Th>
@@ -106,18 +79,19 @@ const Dashboard = () => {
                 </Thead>
                 <Tbody>
                     {
-                        problemList.map((problem, idx) => {
+                        storedState?.questions?.map((problem, idx) => {
                             return <Tr style={{ cursor: 'pointer' }} key={problem.id} onClick={() => handleRoute(problem.id)}>
                                 <Td>{idx + 1}</Td>
-                                <Td>{problem.questionName}</Td>
-                                <Td>{<Badge colorScheme={problem.difficulty === 'easy' ? 'whatsapp' : problem.difficulty === 'hard' ? 'red' : 'orange'}>{problem.difficulty}</Badge>}</Td>
-                                <Td>{problem.solvedBy}</Td>
+                                <Td>{problem.queName}</Td>
+                                <Td>{<Badge colorScheme={problem.tag === 'easy' ? 'whatsapp' : problem.difficulty === 'hard' ? 'red' : 'orange'}>{problem.tag}</Badge>}</Td>
+                                <Td>{problem.submission}</Td>
                             </Tr>
                         })
                     }
                 </Tbody>
 
-            </Table>
+            </Table>}
+
         </Box>
     )
 }
