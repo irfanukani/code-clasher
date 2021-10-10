@@ -27,8 +27,9 @@ function AuthNavbar() {
     const logout = () => {
         dispatch({ type: LOGOUT, payload: {} });
     }
-    const [startTime, setStartTime] = useState("");
-    const [endTime, setEndTime] = useState("");
+
+    const [timeRange, setTimeRange] = useState(10);
+
     const clr = useColorModeValue('#000', '#FFF');
     const icon = useColorModeValue(<MoonIcon />, <SunIcon />);
     const { toggleColorMode } = useColorMode();
@@ -37,8 +38,8 @@ function AuthNavbar() {
     console.log(storedState);
 
     function handleCreateGame() {
-        dispatch(createNewGame(storedState?.userProfile?.profile?.email || "NA", startTime, endTime));
-        history.push('/game/' + JSON.parse(sessionStorage.getItem('gameInfo')).gameId);
+        dispatch(createNewGame(storedState?.userProfile?.profile?.email, timeRange, storedState?.userProfile?.profile?.profilePic));
+        history.push('/room/' + JSON.parse(sessionStorage.getItem('gameInfo')).gameId);
     }
 
     return (
@@ -82,7 +83,7 @@ function AuthNavbar() {
                 <Button mx="8" onClick={toggleColorMode}>
                     {icon}
                 </Button>
-                <Button variant="outline" colorScheme="gray" onClick={onOpen}> Create a game</Button>
+                <Button variant="outline" colorScheme="gray" onClick={onOpen} disabled={storedState?.userProfile?.profile?.email === undefined}> Create a game</Button>
             </Flex>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -91,12 +92,19 @@ function AuthNavbar() {
                     <ModalCloseButton />
                     <ModalBody>
                         <FormControl>
-                            <FormLabel>Starting Time</FormLabel>
+                            {/* <FormLabel>Starting Time</FormLabel>
                             <Input type="time" onChange={(e) => setStartTime(e.target.value)} />
                             <FormHelperText>Game will automatically start at this time.</FormHelperText>
                             <FormLabel mt="8">Ending Time</FormLabel>
                             <Input type="time" onChange={(e) => setEndTime(e.target.value)} />
-                            <FormHelperText>Results will be announced at this time.</FormHelperText>
+                            <FormHelperText>Results will be announced at this time.</FormHelperText> */}
+                            <FormLabel>Time of the round</FormLabel>
+                            <Flex justifyContent="space-between" w="60" my="8" mx="auto">
+                                <div className={timeRange === 10 ? "select-custom selected" : "select-custom"} onClick={() => setTimeRange(10)}>10 Min</div>
+                                <div className={timeRange === 20 ? "select-custom selected" : "select-custom"} onClick={() => setTimeRange(20)}>20 Min</div>
+                                <div className={timeRange === 30 ? "select-custom selected" : "select-custom"} onClick={() => setTimeRange(30)}>30 Min</div>
+                            </Flex>
+
                         </FormControl>
                     </ModalBody>
 
@@ -104,7 +112,7 @@ function AuthNavbar() {
                         <Button variant="ghost" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button colorScheme="blue" onClick={handleCreateGame}>Create Room</Button>
+                        <Button onClick={handleCreateGame} >Create Room</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

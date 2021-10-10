@@ -8,9 +8,11 @@ import { getUserProfile } from './Actions/Profile/getUserProfile'
 import AuthNavbar from './Components/AuthNavbar'
 import Dashboard from './Components/Dashboard/Dashboard'
 import Game from './Components/Game'
+import GameNavBar from './Components/GameNavBar'
 import Login from './Components/Login'
 import Navbar from './Components/Navbar'
 import Profile from './Components/Profile'
+import { Room } from './Components/Room'
 import SignUp from './Components/SignUp'
 import "./index.css"
 
@@ -60,7 +62,19 @@ export const App = () => {
           <Profile />
         </Route>
         <Route path="/game/:id" >
-          <Game />
+          <>
+            <GameNavBar />
+            <Game />
+          </>
+        </Route>
+        <Route path="/problem/:id" >
+          <>
+            <AuthNavbar />
+            <Game />
+          </>
+        </Route>
+        <Route path="/room/:id">
+          <Room />
         </Route>
         <Route path="*">
           <Redirect to="/"></Redirect>
