@@ -2,31 +2,21 @@ import { Button } from '@chakra-ui/button'
 import { Box, Divider, Flex, Grid, Spacer, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { submit } from '../Actions/Game/submit'
-import { useAPI } from '../Hooks/UseAPI'
-import { CustomEditor } from "./Editor"
+import { useParams } from 'react-router'
+import { useAPI } from '../../Hooks/UseAPI'
+import { CustomEditor } from "../Editor"
 
-function Game() {
-    const path = window?.location?.href
-    const gameInfo = useSelector(state => state.gameInfo);
-    const exampleInput = `4\n5 4 9 7 \n4 5 8`
+function Solve() {
     const [question, setQuestion] = useState("");
-
+    const params = useParams();
+    console.log(params);
     const FetchQuestion = async () => {
-        console.log(gameInfo);
-        const { data } = await useAPI(`/ques/${gameInfo?.questionId}`, "GET");
+        const { data } = await useAPI(`/ques/${params.id}`, "GET");
         if (data) {
             console.log(data?.data[0])
             setQuestion(data.data[0]);
         }
-    }
-
-    const dispatch = useDispatch();
-    const storedState = useSelector(state => state)
-    const submitCode = () => {
-        dispatch(submit(storedState.code));
     }
 
     useEffect(() => {
@@ -45,8 +35,8 @@ function Game() {
                     <Flex alignItems="center">
                         <Text fontSize="2xl" px="8">{question?.queName}</Text>
                         <Spacer />
-                        {/* <Button colorScheme="whatsapp" px="8" mx="4"> Run</Button> */}
-                        {path?.split('/')?.includes('game') && <Button px="8" onClick={submitCode}>Submit</Button>}
+                        <Button colorScheme="whatsapp" px="8" mx="4"> Run</Button>
+
                     </Flex>
                     <Box px="8" mt="14" >
                         <div className="question" dangerouslySetInnerHTML={{ __html: question?.probStatement }}></div>
@@ -65,4 +55,4 @@ function Game() {
     )
 }
 
-export default Game
+export default Solve

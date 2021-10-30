@@ -12,5 +12,6 @@ export const login = (userData) => async (dispatch) => {
     else {
         dispatch({ type: LOGIN_SUCCESS, payload: data.data });
         dispatch(getUserProfile());
+        sessionStorage.setItem("id", data.data._id)
     }
 }

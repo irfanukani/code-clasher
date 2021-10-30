@@ -3,32 +3,23 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
+import { useDispatch } from 'react-redux';
 
-const dummy = `
-// Currently We Only Support C++
-#include <bits/stdc++.h>
-using namespace std;
 
-void solve() {
-    //Your Code Here
-}
-
-int main() {
-    int t;
-    cin>>t;
-    while(t--) solve();
-    return 0;
-}
-`;
+const dummy = "";
 
 export const CustomEditor = () => {
     // state = { code };
-    const [code, setCode] = useState(dummy);
+    const [code, setCode] = useState("#include<bits/stdc++.h> \nusing namespace std;\n\nvoid initialize() {\n    #ifndef ONLINE_JUDGE\n    freopen(\"input.txt\",\"r\",stdin);\n    freopen(\"output.txt\",\"w\",stdout);\n    #endif\n}\n\nint main() {\n//WRITE YOUR CODE HERE\n\n}");
+    const dispatch = useDispatch();
+    const storeCode = (codeX) => {
+        dispatch({ type: "CODE_STORE", payload: codeX });
+    }
 
     return (
         <Editor
             value={code}
-            onValueChange={code => setCode(code)}
+            onValueChange={code => { setCode(code); storeCode(code); }}
             highlight={code => highlight(code, languages.clike)}
             padding={10}
             style={{
