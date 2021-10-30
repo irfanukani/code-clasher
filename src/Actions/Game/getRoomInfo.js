@@ -7,5 +7,6 @@ export const getRoomInfo = (gameID) => async dispatch => {
         const data = snapshot.val();
         console.log(data);
         dispatch({ type: 'ROOM_DATA_UPDATED', payload: data });
+		sessionStorage.setItem("gameInfo" , JSON.stringify(data));
     });
 }

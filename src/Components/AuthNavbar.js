@@ -37,8 +37,18 @@ function AuthNavbar() {
     const storedState = useSelector(state => state);
     console.log(storedState);
 
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+
     function handleCreateGame() {
-        dispatch(createNewGame(storedState?.userProfile?.profile?.email, timeRange, storedState?.userProfile?.profile?.profilePic));
+        const idx = getRandomIntInclusive(0, storedState?.questions?.length);
+        const randomQuestionId = storedState?.questions[idx]?._id;
+        console.log(randomQuestionId)
+        dispatch(createNewGame(storedState?.userProfile?.profile?.email, timeRange, randomQuestionId));
         history.push('/room/' + JSON.parse(sessionStorage.getItem('gameInfo')).gameId);
     }
 

@@ -7,6 +7,7 @@ import { createError, deleteErrors } from './Actions/Errors/handleErrors'
 import { getUserProfile } from './Actions/Profile/getUserProfile'
 import AuthNavbar from './Components/AuthNavbar'
 import Dashboard from './Components/Dashboard/Dashboard'
+import Solve from './Components/Dashboard/Solve'
 import Game from './Components/Game'
 import GameNavBar from './Components/GameNavBar'
 import Login from './Components/Login'
@@ -70,7 +71,7 @@ export const App = () => {
         <Route path="/problem/:id" >
           <>
             <AuthNavbar />
-            <Game />
+            <Solve />
           </>
         </Route>
         <Route path="/room/:id">

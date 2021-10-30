@@ -6,9 +6,11 @@ import { Spinner } from '@chakra-ui/spinner';
 import { Tooltip } from '@chakra-ui/tooltip';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { exitRoom } from '../Actions/Game/exitRoom';
 import { getRoomInfo } from '../Actions/Game/getRoomInfo';
 import { joinRoom } from "../Actions/Game/joinRoom"
+import { startTheGame } from '../Actions/Game/startGame';
 import { getUserProfile } from "../Actions/Profile/getUserProfile"
 
 const useUnload = fn => {
@@ -26,16 +28,36 @@ const useUnload = fn => {
 const Room = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const storedState = useSelector(state => state.gameInfo);
     const profileData = useSelector(state => state)
-    useEffect(() => {
-        dispatch(getUserProfile())
+
+    let user = JSON.parse(localStorage.getItem('user'));
+
+    if (storedState?.isGameStarted) {
+        history.push('/game/' + storedState?.gameId);
+    }
+
+    const joinRoomAsync = async () => {
+        dispatch(getUserProfile());
         if (!storedState) {
             dispatch(getRoomInfo(window?.location?.href?.split('/')[4]));
         }
+        if (profileData) {
+            user = JSON.parse(localStorage.getItem('user'));
+            // console.log(user);
+            dispatch(joinRoom(user?.email, user?.profilePic, window?.location?.href?.split('/')[4]));
 
-        dispatch(joinRoom(profileData?.userProfile?.profile?.email, profileData?.userProfile?.profile?.profilePic, window?.location?.href?.split('/')[4]));
+        }
+
+    }
+    useEffect(() => {
+        joinRoomAsync();
     }, []);
+
+    function startGame() {
+        dispatch(startTheGame(window?.location?.href?.split('/')[4]))
+    }
 
     useUnload(event => {
         dispatch(exitRoom(profileData?.userProfile?.profile?.email, window?.location?.href?.split('/')[4]))
@@ -47,7 +69,7 @@ const Room = () => {
     }
 
     return (
-        <Grid templateColumns="3fr 1fr">
+        <Grid>
             <Grid placeItems="center" h="100vh">
                 <Flex className="link" position="absolute" top="20" w="96" justifyContent="space-between" alignItems="center">
                     {window.location.href}
@@ -64,19 +86,9 @@ const Room = () => {
                     <p style={{ textAlign: 'center' }}> {storedState?.joinedPeople?.length || 0} People joined the room.</p>
 
                 </Stack>
-                <Button position="absolute" bottom="20">Start Game</Button>
+                {user?.email === storedState?.hostEmail ? <Button position="absolute" bottom="20" onClick={startGame}>Start Game</Button> : ""}
             </Grid>
-            <Box h="100vh" p="8" fontFamily="mono" position="relative">
-                <Text fontSize="xl" fontWeight="bold">Live Chat : </Text>
-                <Box mt="2" shadow="xl" height="80vh" overflow="scroll">
-                </Box>
-                <Flex position="absolute" bottom="3" alignItems="center" justifyContent="space-between" w="72">
-                    <Input type="text" shadow="xl"></Input>
-                    &nbsp;&nbsp;
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" "/></svg> */}
-                    <svg style={{ cursor: 'pointer' }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" fill="rgba(84,72,251,1)" /></svg>
-                </Flex>
-            </Box>
+
         </Grid>
     )
 }

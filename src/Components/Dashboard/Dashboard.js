@@ -80,7 +80,7 @@ const Dashboard = () => {
                 <Tbody>
                     {
                         storedState?.questions?.map((problem, idx) => {
-                            return <Tr style={{ cursor: 'pointer' }} key={problem.id} onClick={() => handleRoute(problem.id)}>
+                            return <Tr style={{ cursor: 'pointer' }} key={problem.id} onClick={() => handleRoute(problem._id)}>
                                 <Td>{idx + 1}</Td>
                                 <Td>{problem.queName}</Td>
                                 <Td>{<Badge colorScheme={problem.tag === 'easy' ? 'whatsapp' : problem.difficulty === 'hard' ? 'red' : 'orange'}>{problem.tag}</Badge>}</Td>

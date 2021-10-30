@@ -2,8 +2,7 @@ import { getDatabase, ref, runTransaction } from "firebase/database";
 import { getRoomInfo } from "./getRoomInfo";
 
 export const joinRoom = (email, profilePic, gameId) => async dispatch => {
-    console.log(email)
-    console.log("Join Called")
+
     const db = getDatabase();
     const gameRef = ref(db, '/games/' + gameId);
     runTransaction(gameRef, (people) => {
